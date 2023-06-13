@@ -38,12 +38,12 @@ else:
 #   ------------------------------------------
 #   READ VELOCITY MODEL
 
-velocity_model = np.genfromtxt(file_vel, delimiter=',')
+velocity_model = np.float32(np.load(file_vel))
 slownes = 1.0 / velocity_model
 slownes = ndimage.gaussian_filter(slownes, sigma=2)
 velocity_model = 1.0 / slownes
 velocity_model = velocity_model.astype(np.float32)
-np.savetxt(path_to_output+"/smoothed_velmod.csv", velocity_model, delimiter=',')
+np.save(path_to_output+"/smoothed_velmod.npy", velocity_model)
 vmin = np.min(velocity_model)
 vmax = np.max(velocity_model)
 
@@ -69,7 +69,7 @@ print("Preparing shots for all sources ...")
 
 prep_shots_time_start = time.time()
 
-shot_isx, file_shot = readShotFiles.returnShotIndices(shots_dir, "csv", "seis", "_")
+shot_isx, file_shot = readShotFiles.returnShotIndices(shots_dir, "npy", "seis", "_")
 ns = len(shot_isx)
 
 print("number of shots:",ns)
@@ -89,7 +89,7 @@ pulse_back_fs = np.zeros((ns,config.nt,config.nx), dtype=np.complex64)
 for s in range(ns):
     pulse_forw_st[s,:,:] = util.makeRickerWavelet([config.xmin + shot_isx[s]*config.dx], config.zinit, config.nt, config.nx, tj, xi, config.dz, v)
     pulse_forw_fs[s,:,:] = spfft.fft(pulse_forw_st[s,:,:], axis=0)
-    pulse_back_st[s,:,:] = np.genfromtxt(file_shot[s], delimiter=',', dtype=np.float32)
+    pulse_back_st[s,:,:] = np.float32(np.load(file_shot[s]))
     pulse_back_fs[s,:,:] = spfft.fft(pulse_back_st[s,:,:], axis=0)
 
 prep_shots_time_stop = time.time()
@@ -127,8 +127,8 @@ print("    Extrapolation and Imaging (s)  :",extrap_time_total)
 
 final_image = np.zeros((config.nz,config.nx), dtype=np.float32)
 for s in range(ns):
-    np.savetxt(path_to_output+"/image"+str(shot_isx[s])+"_.csv", image[s], delimiter=',')
+    np.save(path_to_output+"/image"+str(shot_isx[s])+"_.npy", image[s])
     final_image += image[s]
 
 #save final image
-np.savetxt(path_to_output+"/final_image.csv", final_image, delimiter=',')
+np.save(path_to_output+"/final_image.npy", final_image)
