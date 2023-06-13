@@ -1,18 +1,18 @@
 key_value
 
-nt_800
-nw_350
+nt_5001
+nw_1000
 
 zmin_0
-zmax_2000
+zmax_5000
 
 zinit_0
-zfinal_1990
+zfinal_4990
 
-xmin_-1000
-xmax_1000
+xmin_0
+xmax_10000
 
 tmin_0.0
-tmax_0.8
+tmax_2.5
 
-nvel_8
+nvel_2
