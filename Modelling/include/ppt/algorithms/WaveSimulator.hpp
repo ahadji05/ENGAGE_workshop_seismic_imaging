@@ -94,10 +94,7 @@ template <class ExecSpace> class WaveSimulator
             fd_time_extrap(wavefield_new, wavefield, wavefield_old, wavefield_pxx, wavefield_pzz, velmodel, _dt, _dh,
                            ExecSpace());
 
-            /*************************************************************************************************************/
-            // Copy data from layer z==2 of wavefield into the receivers for the current time-step.
             MemSpace::copyToHost(&receivers[i * _nx], wavefield_new.get_ptr() + 2 * _nx, _nx);
-            /*************************************************************************************************************/
 
             wavefield_old.swap(wavefield);
             wavefield.swap(wavefield_new);
@@ -208,7 +205,7 @@ template <class ExecSpace> void WaveSimulator<ExecSpace>::make_ricker(float_type
 
     // compute half Ricker-wavelet on host array
     data_host[0] = 1.0;
-    for (int it = 1; it < _nt; ++it)
+    for (size_t it = 1; it < _nt; ++it)
     {
         float_type t = it * _dt;
         float_type term = M_PI * M_PI * fpeak * fpeak * t * t;
