@@ -6,13 +6,13 @@ SRC = ./src/cpp/
 # set compilers and flag(s)
 # -------------------------
 CXX = g++
-CXXFLAGS = -Wall -Wpedantic -Ofast -std=c++14 -I$(INC)
+CXXFLAGS = -Wall -Wpedantic -Werror -Ofast -std=c++11 -I$(INC)
 
 main_exe: main.o add_source.o stencil.o time_extrap.o
 	$(CXX) $(CXXFLAGS) *.o -o $@
 
 main.o: main.cpp
-	$(CXX) $(CXXFLAGS)  -c $? -o $@
+	$(CXX) $(CXXFLAGS) -c $? -o $@
 
 add_source.o: $(SRC)add_source.cpp
 	$(CXX) $(CXXFLAGS) -c $? -o $@
