@@ -19,19 +19,19 @@ int main()
     WaveSimulator<exec_space> Sim;
 
     // Set modelling parameters
-    Sim.set_time_step(0.0005);
-    Sim.set_number_of_time_steps(5001);
-    Sim.set_dimensions(501, 1001);
-    Sim.set_space_step(10.0);
+    Sim.set_time_step(0.001);
+    Sim.set_number_of_time_steps(1001);
+    Sim.set_dimensions(1001, 2001);
+    Sim.set_space_step(5.0);
     Sim.set_source_position_z(2);
-    Sim.set_source_position_x(500);
+    Sim.set_source_position_x(1000);
     Sim.make_ricker(10);
 
     // Set the background velocity and add layers of different velocities
     Sim.set_vmin(1500);
-    Sim.set_velocity_layer(50, 75, 2000);
-    Sim.set_velocity_layer(75, 100, 3500);
-    Sim.set_velocity_layer(100, 501, 4800);
+    Sim.set_velocity_layer(50, 75, 3000);
+    Sim.set_velocity_layer(75, 100, 2000);
+    Sim.set_velocity_layer(100, 1001, 3000);
 
     // Compute and print the Courant-Friedricks-Lewy stability condition
     Sim.print_CFL_condition();

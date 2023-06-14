@@ -9,6 +9,7 @@
 #include "ppt/routines/add_source.hpp"
 #include "ppt/routines/stencil.hpp"
 #include "ppt/routines/time_extrap.hpp"
+#include "ppt/timer.hpp"
 
 /**
  * @brief This class implements wavefield simulation based on the 2D
@@ -40,6 +41,7 @@ template <class ExecSpace> class WaveSimulator
     std::vector<float_type> receivers;
     float_type _dt, _dh, _vmin, _vmax;
     size_t _nt, _nz, _nx, _srcz, _srcx;
+    timer T1, T2, T3, T4, T5;
 
   public:
     WaveSimulator() = default;
@@ -79,26 +81,49 @@ template <class ExecSpace> class WaveSimulator
     // main algorithm
     void run()
     {
+        T1.set_name("ADD_SOURCE");
+        T2.set_name("CALC_PZZ");
+        T3.set_name("CALC_PXX");
+        T4.set_name("TIME_EXTRAP");
+        T5.set_name("RECORD");
+
         receivers.resize(_nt * _nx);
+
         for (size_t i(0); i < _nt; ++i)
         {
             if (i % 250 == 0)
                 std::cout << "time-step: " << i << std::endl;
 
+            T1.start();
             add_source(wavefield, source_impulse[i], _srcx, _srcz, ExecSpace());
+            T1.stop();
 
-            fd_pxx(wavefield_pxx, wavefield, ExecSpace());
-
+            T2.start();
             fd_pzz(wavefield_pzz, wavefield, ExecSpace());
+            T2.stop();
 
+            T3.start();
+            fd_pxx(wavefield_pxx, wavefield, ExecSpace());
+            T3.stop();
+
+            T4.start();
             fd_time_extrap(wavefield_new, wavefield, wavefield_old, wavefield_pxx, wavefield_pzz, velmodel, _dt, _dh,
                            ExecSpace());
+            T4.stop();
 
+            T5.start();
             MemSpace::copyToHost(&receivers[i * _nx], wavefield_new.get_ptr() + 2 * _nx, _nx);
+            T5.stop();
 
             wavefield_old.swap(wavefield);
             wavefield.swap(wavefield_new);
         }
+
+        T1.dispInfo();
+        T2.dispInfo();
+        T3.dispInfo();
+        T4.dispInfo();
+        T5.dispInfo();
     }
 };
 
