@@ -1,0 +1,27 @@
+
+# set paths to include and source directories
+INC = ./include/
+SRC = ./src/cpp/
+
+# set compilers and flag(s)
+# -------------------------
+CXX = g++
+CXXFLAGS = -Wall -Wpedantic -Ofast -std=c++14 -I$(INC) -DPPT_ENABLE_OPENMP_BACKEND -fopenmp
+
+main_exe: main.o add_source.o stencil.o time_extrap.o
+	$(CXX) $(CXXFLAGS) *.o -o $@
+
+main.o: main.cpp
+	$(CXX) $(CXXFLAGS)  -c $? -o $@
+
+add_source.o: $(SRC)add_source.cpp
+	$(CXX) $(CXXFLAGS) -c $? -o $@
+
+stencil.o: $(SRC)stencil.cpp
+	$(CXX) $(CXXFLAGS) -c $? -o $@
+
+time_extrap.o: $(SRC)time_extrap.cpp
+	$(CXX) $(CXXFLAGS) -c $? -o $@
+
+clean:
+	rm main_exe *.o *.npy
