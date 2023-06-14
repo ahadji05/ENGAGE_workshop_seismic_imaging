@@ -1,0 +1,29 @@
+
+# set paths to include and source directories
+INC = ./include/
+SRC = ./src/cu/
+
+# set compilers and flag(s)
+# -------------------------
+CXX = g++
+CUXX = nvcc
+CXXFLAGS = -Wall -Wpedantic -Werror -Ofast -std=c++11 -I$(INC) -DPPT_ENABLE_CUDA_BACKEND
+CUXXFLAGS = -O3 -arch=sm_80 -I$(INC) -DPPT_ENABLE_CUDA_BACKEND
+
+main_exe: main.o add_source.o stencil.o time_extrap.o
+	$(CXX) $(CXXFLAGS) *.o -o $@ -lcudart
+
+main.o: main.cpp
+	$(CXX) $(CXXFLAGS) -c $? -o $@
+
+add_source.o: $(SRC)add_source.cu
+	$(CUXX) $(CUXXFLAGS) -c $? -o $@
+
+stencil.o: $(SRC)stencil.cu
+	$(CUXX) $(CUXXFLAGS) -c $? -o $@
+
+time_extrap.o: $(SRC)time_extrap.cu
+	$(CUXX) $(CUXXFLAGS) -c $? -o $@
+
+clean:
+	rm main_exe *.o *.npy
