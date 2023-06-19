@@ -200,6 +200,7 @@ template <class ExecSpace> void WaveSimulator<ExecSpace>::set_vmin(float_type vm
     assert(vmin > 0);
 
     _vmin = vmin;
+    _vmax = vmin;
     // allocate array on Host
     float_type *data_host;
     ppt::MemSpaceHost::allocate(&data_host, velmodel.get_nElems());
