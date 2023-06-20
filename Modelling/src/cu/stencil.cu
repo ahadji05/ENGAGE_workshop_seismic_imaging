@@ -7,9 +7,10 @@ __global__ void fd_pxx_kernel(float_type *pxx_data, float_type *p_data, size_t n
     size_t ix = blockDim.x * blockIdx.x + threadIdx.x;
     size_t iz = blockDim.y * blockIdx.y + threadIdx.y;
 
-    if (ix < 2 || ix >= nx - 2) return;
-
-    if (iz >= nz) return;
+    if (ix < 2 || ix >= nx - 2)
+        return;
+    if (iz < 2 || iz >= nz - 2)
+        return;
 
     float_type c0 = -5.0 / 2.0;
     float_type c1 = 4.0 / 3.0;
@@ -25,9 +26,10 @@ __global__ void fd_pzz_kernel(float_type *pzz_data, float_type *p_data, size_t n
     size_t ix = blockDim.x * blockIdx.x + threadIdx.x;
     size_t iz = blockDim.y * blockIdx.y + threadIdx.y;
 
-    if (ix >= nx) return;
-
-    if (iz < 2 || iz >= nz - 2) return;
+    if (ix < 2 || ix >= nx - 2)
+        return;
+    if (iz < 2 || iz >= nz - 2)
+        return;
 
     float_type c0 = -5.0 / 2.0;
     float_type c1 = 4.0 / 3.0;
@@ -53,7 +55,7 @@ void fd_pxx(ScalarField<ppt::MemSpaceHip> &pxx, const ScalarField<ppt::MemSpaceH
     size_t nx = pxx.get_nx();
 
     float_type *pxx_data = pxx.get_ptr();
-    float_type *p_data   = p.get_ptr();
+    float_type *p_data = p.get_ptr();
 
     // NOTE FOR POTENTIAL BUG:
     // IF the range of the loop becomes negative,
@@ -89,7 +91,7 @@ void fd_pzz(ScalarField<ppt::MemSpaceHip> &pzz, const ScalarField<ppt::MemSpaceH
     size_t nx = pzz.get_nx();
 
     float_type *pzz_data = pzz.get_ptr();
-    float_type *p_data   = p.get_ptr();
+    float_type *p_data = p.get_ptr();
 
     // NOTE FOR POTENTIAL BUG:
     // IF the range of the loop becomes negative,
