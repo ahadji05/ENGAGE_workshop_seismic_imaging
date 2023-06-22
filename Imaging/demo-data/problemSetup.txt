@@ -1,7 +1,7 @@
 key_value
 
-nt_5001
-nw_1000
+nt_1001
+nw_400
 
 zmin_0
 zmax_5000
@@ -13,6 +13,4 @@ xmin_0
 xmax_10000
 
 tmin_0.0
-tmax_2.5
-
-nvel_2
+tmax_1.0
