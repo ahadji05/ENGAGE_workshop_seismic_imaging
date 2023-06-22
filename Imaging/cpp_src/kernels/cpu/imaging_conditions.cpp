@@ -6,7 +6,7 @@ extern "C"
 {
 
 void imaging(int ns, int shotSize, int nx, int nf, fcomp * forw, fcomp * back, int sizeImage, int depthIdx, float * image){
-
+/*
     fcomp * conv = new fcomp[ns*nx];
 
     #pragma omp parallel for schedule(dynamic,1)
@@ -27,7 +27,14 @@ void imaging(int ns, int shotSize, int nx, int nf, fcomp * forw, fcomp * back, i
         }
 
     delete [] conv;
+*/
 
+
+        for (int s = 0; s < ns; ++s)
+            for (int f = 0; f < nf; ++f)
+                for (int x = 0; x < nx; ++x)
+                    image[s * sizeImage + depthIdx * nx + x] +=
+                        std::real(forw[s * shotSize + f * nx + x] * std::conj(back[s * shotSize + f * nx + x]));
 }
 
 } // end extern "C"
