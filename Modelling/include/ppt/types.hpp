@@ -11,8 +11,4 @@
 // SELECT FLOATING-POINT PRECISION (DATA-TYPE)
 using float_type = double;
 
-
-// DEFINE memo_space AS THE accessible_space OF THE SELECTED EXECUTION-SPACE
-// using memo_space = typename exec_space::accessible_space;
-
 #endif // PPT_TYPES_HPP
