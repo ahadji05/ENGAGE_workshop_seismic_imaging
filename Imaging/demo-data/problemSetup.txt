@@ -4,10 +4,10 @@ nt_1001
 nw_400
 
 zmin_0
-zmax_5000
+zmax_2500
 
 zinit_0
-zfinal_4990
+zfinal_2000
 
 xmin_0
 xmax_10000
