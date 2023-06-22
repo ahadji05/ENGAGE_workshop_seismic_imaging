@@ -2,11 +2,8 @@
 # paths to include directories
 INC           = ../include/
 
-# path to cufft library : libcufft.so
-LIB_cufft    = /path/to/cufft/lib/
-
 # target amd architecture
-Tarch = -arch=sm_35
+Tarch = -arch=sm_80
 
 # set compiler and flags
 CXX = nvcc
@@ -22,7 +19,7 @@ SRC = ../kernels/gpu/
 all: 2dPWM
 
 2dPWM: interpolation.o phase_shifts.o imaging_conditions.o device_CUDA_fft.o prep_operators.o
-	$(CXX) -shared $(CXXFLAGS) *.o PWM_cuda.cu -o PWM_cuda.so $(INCFLAGS) -L$(LIB_cufft) -lcufft
+	$(CXX) -shared $(CXXFLAGS) *.o PWM_cuda.cu -o PWM_cuda.so $(INCFLAGS) -lcufft
 
 device_CUDA_fft.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)device_CUDA_fft.cu -I$(INC)
