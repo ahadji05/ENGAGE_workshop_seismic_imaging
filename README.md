@@ -1,1 +1,1 @@
-# ENGAGE_workshop_seismic_imaging
+# ENGAGE_workshop
