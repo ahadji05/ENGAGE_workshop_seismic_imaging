@@ -11,7 +11,7 @@
 #SBATCH --error=job.%j.err
 #SBATCH --output=job.%j.out
 #SBATCH -A engage
-
+#SBATCH --reservation=engage
 
 start=$SECONDS
 bash run_cuda.sh

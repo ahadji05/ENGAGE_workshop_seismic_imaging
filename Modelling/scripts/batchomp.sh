@@ -5,12 +5,13 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=20
-#SBATCH --partition=a100
+#SBATCH --cpus-per-task=16
+#SBATCH --partition=p100
 #SBATCH --time=00:05:00
 #SBATCH --error=job.%j.err
 #SBATCH --output=job.%j.out
-#SBATCH -A simea
+#SBATCH -A engage
+#SBATCH --reservation=engage
 
 nthreads="1 2 4 8 16 20"
 export OMP_PLACES=cores

@@ -11,6 +11,7 @@
 #SBATCH --error=job.%j.err
 #SBATCH --output=job.%j.out
 #SBATCH -A engage
+#SBATCH --reservation=engage
 
 export OMP_PLACES=cores
 export OMP_PROC_BIND=close
